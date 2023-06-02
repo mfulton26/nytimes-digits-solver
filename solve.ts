@@ -22,10 +22,9 @@ export function solve(
   target: number,
   numbers: number[]
 ): Operation[] | undefined {
-  const seen = new Set<string>();
-  const queue = [{ numbers, operations: [] as Operation[] }];
-  while (queue.length) {
-    const { numbers, operations } = queue.shift()!;
+  const stack = [{ numbers, operations: [] as Operation[] }];
+  while (stack.length) {
+    const { numbers, operations } = stack.pop()!;
     if (numbers.includes(target)) {
       return operations;
     }
@@ -39,14 +38,8 @@ export function solve(
           if (!Number.isInteger(operation.result) || operation.result < 0) {
             continue;
           }
-          const newNumbers = numbersWithoutLHS.with(j, operation.result);
-          const hash = newNumbers.toSorted().join();
-          if (seen.has(hash)) {
-            continue;
-          }
-          seen.add(hash);
-          queue.push({
-            numbers: newNumbers,
+          stack.push({
+            numbers: numbersWithoutLHS.with(j, operation.result),
             operations: [...operations, operation],
           });
         }
