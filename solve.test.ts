@@ -6,9 +6,9 @@ const testCases = [
   { target: 93, numbers: [1, 2, 3, 4, 5, 25] },
 ];
 
-Deno.test("testCases", () => {
-  for (const { target, numbers } of testCases) {
+for (const { target, numbers } of testCases) {
+  Deno.test(`${target}:${numbers}`, () => {
     const operations = solve(target, numbers);
     assertEquals(operations?.at(-1)?.result, target);
-  }
-});
+  });
+}
